@@ -1,9 +1,20 @@
-	#Define Variables
-	   $RDPname=$line."DELETEME.rdp"
-	   $PSMserver='components'
-	   $Username=Read-Host -Prompt 'Input ACCOUNT name'
-	   $Server=Read-Host -Prompt 'Input SERVER name'
-#	   $EPVuser=$line.epv_username
+
+
+Function BuildBanner{
+write-host " _____               _            _   _                       " -ForegroundColor Green
+write-host "|  __ \             (_)          | | (_)                      " -ForegroundColor Green
+write-host "| |__) | __ _____  ___  ___ _   _| |_ _  ___  _ __   ___ _ __ " -ForegroundColor Green
+write-host "|  ___/ '__/ _ \ \/ / |/ __| | | | __| |/ _ \| '_ \ / _ \ '__|" -ForegroundColor Green
+write-host "| |   | | | (_) >  <| | (__| |_| | |_| | (_) | | | |  __/ |   " -ForegroundColor Green
+write-host "|_|   |_|  \___/_/\_\_|\___|\__,_|\__|_|\___/|_| |_|\___|_|   " -ForegroundColor Green
+write-host "                                                              " -ForegroundColor Green
+}
+
+
+Function Build_RDPFile{
+		#Define Variable
+		   $Username=Read-Host -Prompt 'Input ACCOUNT name'
+		   $Server=Read-Host -Prompt 'Input SERVER name'
 
 		#Building of RDP File
 		   add-content $RDPname "screen mode id:i:2"
@@ -52,6 +63,28 @@
 		   add-content $RDPname "use redirection server name:i:0"
 		   add-content $RDPname "rdgiskdcproxy:i:0"
 		   add-content $RDPname "kdcproxyname:s:"
-#		   add-content $RDPname "username:s:$EPVuser"
 		   add-content $RDPname "drivestoredirect:s:"
-		Write-Host "$RDPname Created successfully." -ForegroundColor Green
+   		   Write-Host "$RDPname Created successfully." -ForegroundColor Green
+}
+
+Function Execute-RDPFile{
+mstsc .\DELETEME.rdp
+}
+
+Function CleanUpRDPFile{
+start-sleep 5
+remove-item .\DELETEME.rdp
+Write-Host "Cleanup complete." -ForegroundColor Green
+}
+
+BuildBanner
+while($true)
+{
+	#Define Variables
+	   $RDPname="DELETEME.rdp"
+	   $PSMserver='components'
+
+Build_RDPFile
+Execute-RDPFile
+CleanUpRDPFile
+}
